@@ -1,0 +1,908 @@
+:root{
+  --intro1:#070b24;
+  --intro2:#0b2a7a;
+
+  --sky1:#a9e9ff;
+  --sky2:#74d2ff;
+
+  --pinkBg:#ffd3e8;
+  --pinkBg2:#ffb9dc;
+
+  --card:#fbf6ee;
+  --border:#ff4fa0;
+  --border2:#ff8ac9;
+
+  --text:#141414;
+  --shadow: rgba(0,0,0,.35);
+
+  --yes:#2ecc71;
+  --no:#e74c3c;
+
+  --btnShadow: rgba(0,0,0,.55);
+  --focus:#1d4ed8;
+}
+
+*{ box-sizing:border-box; }
+html,body{ height:100%; margin:0; }
+
+body{
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  color: var(--text);
+  overflow:hidden;
+  background:#0b0d1a;
+}
+
+/* Canvas hearts */
+#hearts{
+  position:fixed;
+  inset:0;
+  width:100%;
+  height:100%;
+  pointer-events:none;
+  z-index:50;
+}
+
+/* App + screens */
+.app{ position:relative; height:100%; width:100%; z-index:1; }
+
+.screen{
+  position:absolute;
+  inset:0;
+  display:none;
+  padding: clamp(14px, 3.2vw, 24px);
+}
+.screen.is-active{ display:block; }
+
+.container{
+  width:min(720px, 92vw);
+  margin:0 auto;
+  height:100%;
+}
+
+.center{
+  display:grid;
+  place-items:center;
+  text-align:center;
+}
+
+/* Background per screen */
+.screen--intro{
+  background: radial-gradient(1200px 900px at 50% 20%, var(--intro2), var(--intro1));
+}
+.screen--game{
+  background: linear-gradient(180deg, var(--sky1), var(--sky2));
+}
+.screen--question,
+.screen--thanks{
+  background: radial-gradient(900px 700px at 50% 20%, var(--pinkBg), var(--pinkBg2));
+}
+
+/* ---------- INTRO polish ---------- */
+.intro-stack{
+  display:grid;
+  gap: 18px;
+  place-items:center;
+  transform: translateY(-10px);
+}
+
+.pixel-title{
+  margin:0;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.18em;
+  color:#ff5ea8;
+  font-size: clamp(34px, 7.6vw, 76px);
+  text-shadow:
+    0 6px 0 rgba(0,0,0,.45),
+    3px 0 0 rgba(0,0,0,.22),
+    -3px 0 0 rgba(0,0,0,.22),
+    0 0 24px rgba(255, 94, 168, .25);
+}
+
+.pixel-title--sm{
+  font-size: clamp(20px, 5.5vw, 34px);
+  letter-spacing:.06em;
+  text-transform:none;
+}
+
+.pixel-title--md{
+  font-size: clamp(26px, 6.8vw, 54px);
+  letter-spacing:.10em;
+}
+
+.pixel-sub{
+  margin: 0;
+  color: rgba(255,255,255,.86);
+  font-size: clamp(14px, 4.2vw, 18px);
+  text-shadow: 0 2px 0 rgba(0,0,0,.35);
+  opacity: .95;
+}
+
+.emoji{ filter: drop-shadow(0 2px 0 rgba(0,0,0,.35)); }
+
+.pulse{
+  animation: pulse 1.35s ease-in-out infinite;
+}
+@keyframes pulse{
+  0%,100%{ opacity: .75; transform: translateY(0); }
+  50%{ opacity: 1; transform: translateY(-2px); }
+}
+
+/* ---------- Card pro (doble borde) ---------- */
+.card{
+  width:min(680px, 92vw);
+  border-radius: 22px;
+  background: var(--card);
+  box-shadow: 0 22px 70px var(--shadow);
+  border: 4px solid var(--border);
+  padding: 10px;
+  position:relative;
+}
+
+.card::before{
+  content:"";
+  position:absolute;
+  inset: 9px;
+  border: 3px solid var(--border2);
+  border-radius: 18px;
+  pointer-events:none;
+}
+
+.card__inner{
+  padding: clamp(16px, 4vw, 26px) clamp(14px, 3.6vw, 24px);
+}
+
+.card--big .card__inner{
+  padding: clamp(18px, 4.6vw, 30px) clamp(14px, 4vw, 26px);
+}
+
+/* ---------- Buttons (retro) ---------- */
+.btn{
+  font: inherit;
+  border: 3px solid rgba(0,0,0,.75);
+  border-radius: 14px;
+  background:#fff;
+  padding: 12px 18px;
+  cursor:pointer;
+  box-shadow: 4px 4px 0 var(--btnShadow);
+  transition: transform .06s ease, box-shadow .06s ease, filter .12s ease;
+  user-select:none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn:hover{ filter: brightness(1.03); }
+
+.btn:active{
+  transform: translate(3px,3px);
+  box-shadow: 1px 1px 0 var(--btnShadow);
+}
+
+.btn:focus-visible{
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+}
+
+.btn--small{ padding: 10px 14px; font-size: 14px; }
+
+.btn--ghost{
+  margin-top: 8px;
+  background: rgba(255,255,255,.10);
+  color: rgba(255,255,255,.92);
+  border-color: rgba(255,255,255,.50);
+  box-shadow: 4px 4px 0 rgba(0,0,0,.35);
+}
+
+.btn--yes{ background: var(--yes); color:#07140b; }
+.btn--no{ background: var(--no); color:#1a0606; }
+
+/* Actions area for NO escaping */
+.actions{
+  margin-top: 18px;
+  position: relative;
+  height: 120px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap: 14px;
+}
+
+.hint{
+  margin: 14px 0 0;
+  font-size: 14px;
+  color: rgba(0,0,0,.62);
+}
+
+.toast{
+  min-height: 18px;
+  margin: 10px 0 0;
+  font-size: 14px;
+  color: rgba(0,0,0,.72);
+}
+
+.hud{
+  position:absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 5;
+}
+
+/* ---------- GAME scene ---------- */
+.game{ position:relative; }
+
+.sky{
+  position:relative;
+  height:100%;
+  display:grid;
+  place-items:center;
+}
+
+.stage{
+  position:relative;
+  width: 520px;
+  height: 520px;
+  display:grid;
+  place-items:end center;
+}
+
+/* Clouds */
+.cloud{
+  position:absolute;
+  width: 200px;
+  height: 70px;
+  background: rgba(255,255,255,.92);
+  border-radius: 20px;
+  box-shadow:
+    0 10px 0 rgba(0,0,0,.06),
+    0 0 28px rgba(255,255,255,.35);
+}
+
+.cloud::before,
+.cloud::after{
+  content:"";
+  position:absolute;
+  background: rgba(255,255,255,.92);
+  border-radius: 18px;
+}
+
+.cloud::before{ width: 64px; height: 64px; left: 22px; top: -18px; }
+.cloud::after{ width: 92px; height: 92px; left: 84px; top: -34px; }
+
+.cloud--1{ top: 14%; left: 8%; transform: scale(.85); opacity:.96; animation: drift 8s linear infinite; }
+.cloud--2{ top: 9%; right: 8%; transform: scale(1.05); opacity:.92; animation: drift2 10s linear infinite; }
+.cloud--3{ top: 24%; right: 34%; transform: scale(.78); opacity:.94; animation: drift 12s linear infinite; }
+
+@keyframes drift{
+  0%{ transform: translateX(0) scale(.85); }
+  50%{ transform: translateX(22px) scale(.85); }
+  100%{ transform: translateX(0) scale(.85); }
+}
+@keyframes drift2{
+  0%{ transform: translateX(0) scale(1.05); }
+  50%{ transform: translateX(-26px) scale(1.05); }
+  100%{ transform: translateX(0) scale(1.05); }
+}
+
+/* ---------- House ---------- */
+.house{
+  width: 340px;
+  height: 260px;
+  position: relative;
+  filter: drop-shadow(0 22px 34px rgba(0,0,0,.18));
+}
+
+.house .roof{
+  position:absolute;
+  left: 50%;
+  top: 18px;
+  width: 0; height: 0;
+  transform: translateX(-50%);
+  border-left: 178px solid transparent;
+  border-right: 178px solid transparent;
+  border-bottom: 104px solid #d44b5c;
+  z-index: 2;
+}
+
+.house .roof::after{
+  content:"";
+  position:absolute;
+  left:-178px;
+  top: 94px;
+  width: 356px;
+  height: 14px;
+  background: rgba(0,0,0,.12);
+}
+
+.house .body{
+  position:absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: 304px;
+  height: 144px;
+  border-radius: 20px;
+  background:
+    repeating-linear-gradient(90deg, rgba(0,0,0,.05), rgba(0,0,0,.05) 10px, rgba(255,255,255,.03) 10px, rgba(255,255,255,.03) 20px),
+    linear-gradient(180deg, #ffe1b6, #f0b979);
+  border: 3px solid rgba(0,0,0,.18);
+  z-index: 1;
+}
+
+.house .door{
+  position:absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: 58px;
+  height: 88px;
+  border-radius: 14px 14px 12px 12px;
+  background: linear-gradient(180deg, #8a5b3a, #6b4329);
+  border: 3px solid rgba(0,0,0,.22);
+}
+
+.house .door::after{
+  content:"";
+  position:absolute;
+  right: 10px;
+  top: 44px;
+  width: 8px; height: 8px;
+  background: rgba(255,255,255,.35);
+  border-radius: 50%;
+  border: 2px solid rgba(0,0,0,.18);
+}
+
+.house .window{
+  position:absolute;
+  bottom: 54px;
+  width: 56px; height: 48px;
+  border-radius: 14px;
+  background: linear-gradient(180deg, #c9f0ff, #79d1ff);
+  border: 3px solid rgba(0,0,0,.18);
+}
+
+.house .window.w1{ left: 46px; }
+.house .window.w2{ right: 46px; }
+
+.house .window::after{
+  content:"";
+  position:absolute;
+  left:0; top:50%;
+  width:100%; height:3px;
+  background: rgba(0,0,0,.14);
+  transform: translateY(-50%);
+}
+
+.house .window::before{
+  content:"";
+  position:absolute;
+  left:50%; top:0;
+  width:3px; height:100%;
+  background: rgba(0,0,0,.14);
+  transform: translateX(-50%);
+}
+
+/* ---------- DOG + INVITE (clean, single source of truth) ---------- */
+.dog-wrap{
+  position:absolute;
+  left:50%;
+  top: 20px;                 /* base del techo */
+  transform: translateX(-50%);
+  z-index: 10;
+  pointer-events:none;
+}
+
+/* Pixel dog (1x1 + box-shadow). Hidden until .is-show */
+.dog{
+  position:absolute;
+  left:50%;
+  top: 0;
+  width: 1px;
+  height: 1px;
+  transform: translateX(-50%) translateY(10px) scale(7);
+  transform-origin: center;
+  background: transparent;
+  image-rendering: pixelated;
+
+  opacity: 0;
+
+  --o: #6b3f24;   /* outline */
+  --b: #c7834a;   /* body */
+  --l: #f2c38a;   /* light */
+  --e: #1f1f1f;   /* eye */
+
+  box-shadow:
+    /* ear */
+    4px 0 var(--o), 5px 0 var(--o),
+    4px 1 var(--o), 5px 1 var(--b), 6px 1 var(--o),
+
+    /* head */
+    3px 2 var(--o), 4px 2 var(--b), 5px 2 var(--b), 6px 2 var(--b), 7px 2 var(--o),
+    2px 3 var(--o), 3px 3 var(--b), 4px 3 var(--l), 5px 3 var(--l), 6px 3 var(--b), 7px 3 var(--b), 8px 3 var(--o),
+    2px 4 var(--o), 3px 4 var(--b), 4px 4 var(--e), 5px 4 var(--l), 6px 4 var(--b), 7px 4 var(--b), 8px 4 var(--o),
+
+    /* snout */
+    7px 5 var(--o), 8px 5 var(--l), 9px 5 var(--o),
+
+    /* neck + back */
+    3px 5 var(--o), 4px 5 var(--b), 5px 5 var(--b), 6px 5 var(--b),
+
+    /* body */
+    2px 6 var(--o), 3px 6 var(--b), 4px 6 var(--l), 5px 6 var(--l), 6px 6 var(--b), 7px 6 var(--o),
+    2px 7 var(--o), 3px 7 var(--b), 4px 7 var(--l), 5px 7 var(--b), 6px 7 var(--b), 7px 7 var(--o),
+
+    /* legs */
+    3px 8 var(--o), 4px 8 var(--b), 6px 8 var(--o),
+    3px 9 var(--o), 4px 9 var(--o), 6px 9 var(--o),
+
+    /* tail */
+    1px 6 var(--o), 0px 5 var(--o), 0px 4 var(--o);
+}
+
+.dog.is-show{
+  opacity: 1;
+  animation: dog-pop 0.9s ease-out forwards, dog-bounce 1.6s ease-in-out 0.9s infinite;
+}
+
+@keyframes dog-pop{
+  from { opacity:0; transform: translateX(-50%) translateY(12px) scale(6.2); }
+  to   { opacity:1; transform: translateX(-50%) translateY(0) scale(7); }
+}
+
+@keyframes dog-bounce{
+  0%,100%{ transform: translateX(-50%) translateY(0) scale(7); }
+  50%{ transform: translateX(-50%) translateY(-6px) scale(7); }
+}
+
+/* Invite card */
+.invite-card{
+  position:absolute;
+  left: 50%;
+  top: -78px;
+  transform: translateX(-50%) translateY(12px);
+  opacity: 0;
+  z-index: 12;
+
+  width: 190px;
+  padding: 10px 12px;
+
+  background: rgba(251,246,238,.98);
+  border: 3px solid rgba(0,0,0,.65);
+  border-radius: 14px;
+  box-shadow: 4px 4px 0 rgba(0,0,0,.45);
+  text-align:center;
+
+  pointer-events:none;
+}
+
+.invite-card::before{
+  content:"";
+  position:absolute;
+  left: 50%;
+  bottom: -10px;
+  transform: translateX(-50%);
+  width: 0; height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 10px solid rgba(0,0,0,.65);
+}
+
+.invite-card::after{
+  content:"";
+  position:absolute;
+  left: 50%;
+  bottom: -7px;
+  transform: translateX(-50%);
+  width: 0; height: 0;
+  border-left: 9px solid transparent;
+  border-right: 9px solid transparent;
+  border-top: 9px solid rgba(251,246,238,.98);
+}
+
+.invite-title{
+  font-weight: 900;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: #ff4fa0;
+  text-shadow: 0 2px 0 rgba(0,0,0,.15);
+  font-size: 14px;
+}
+
+.invite-date{
+  margin-top: 6px;
+  font-weight: 800;
+  font-size: 14px;
+  color: rgba(0,0,0,.82);
+}
+
+/* show card when JS adds class */
+.invite-card.is-show{
+  animation: card-pop 0.9s ease-out forwards;
+}
+
+@keyframes card-pop{
+  from { opacity:0; transform: translateX(-50%) translateY(14px) scale(.96); }
+  to   { opacity:1; transform: translateX(-50%) translateY(0) scale(1); }
+}
+
+/* THANKS text */
+.msg{
+  margin: 14px 0 0;
+  font-size: clamp(15px, 4.4vw, 18px);
+  color: rgba(0,0,0,.84);
+  line-height: 1.5;
+}
+
+.emoji-row{
+  margin: 14px 0 18px;
+  font-size: 22px;
+}
+
+/* Mobile tuning */
+@media (max-width: 430px){
+  .actions{ height: 136px; }
+  .stage{ width: 360px; height: 440px; }
+
+  .dog{ transform: translateX(-50%) translateY(10px) scale(6); }
+  @keyframes dog-pop{
+    from { opacity:0; transform: translateX(-50%) translateY(12px) scale(5.4); }
+    to   { opacity:1; transform: translateX(-50%) translateY(0) scale(6); }
+  }
+  @keyframes dog-bounce{
+    0%,100%{ transform: translateX(-50%) translateY(0) scale(6); }
+    50%{ transform: translateX(-50%) translateY(-6px) scale(6); }
+  }
+
+  .invite-card{ width: 175px; top: -70px; }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce){
+  .cloud--1,.cloud--2,.cloud--3,.pulse{ animation:none !important; }
+  .dog{ animation:none !important; opacity:1; }
+  .invite-card{ opacity:1; transform: translateX(-50%); }
+}
+
+/* ===== Fix texto borroso / doble en móvil (QUESTION + THANKS) ===== */
+
+/* Solo para títulos dentro de cards (question/thanks) */
+.screen--question .pixel-title,
+.screen--thanks .pixel-title{
+  /* baja un poco el tracking para que no “vibre” en Android */
+  letter-spacing: .02em !important;
+
+  /* quita el efecto “doble” */
+  text-shadow: none !important;
+
+  /* mejor contraste y look retro limpio */
+  color: #ff4fa0 !important;
+
+  /* contorno suave (no tan agresivo como text-shadow múltiple) */
+  -webkit-text-stroke: 1.2px rgba(0,0,0,.55);
+  paint-order: stroke fill;
+
+  /* render más nítido */
+  -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
+}
+
+/* Ajuste puntual para que el texto largo no se vea gigante en móvil */
+@media (max-width: 430px){
+  .screen--question .pixel-title{
+    font-size: clamp(18px, 5.2vw, 26px) !important;
+    line-height: 1.15;
+  }
+}
+
+/* ===== Puerta interactiva + transición bonita ===== */
+
+.house .door{
+  cursor: pointer;
+  transform-origin: left center;
+  transform-style: preserve-3d;
+  will-change: transform;
+  transition: transform 900ms cubic-bezier(.2,.9,.2,1), filter 300ms ease;
+  position: absolute;
+  z-index: 3; /* encima del cuerpo */
+}
+
+/* hover/tap feedback */
+.house .door:hover{
+  filter: brightness(1.05);
+}
+
+/* “abierta” (rotación 3D hacia atrás) */
+.house .door.is-open{
+  transform: translateX(-50%) rotateY(-70deg);
+}
+
+/* agrega “borde interior” para efecto de grosor */
+.house .door::before{
+  content:"";
+  position:absolute;
+  inset: 3px 5px 3px 3px;
+  border-radius: 10px 10px 9px 9px;
+  background: rgba(255,255,255,.08);
+  opacity: .5;
+}
+
+/* brillo suave cuando abres */
+.house::after{
+  content:"";
+  position:absolute;
+  inset: -20px -20px -10px -20px;
+  border-radius: 26px;
+  background: radial-gradient(260px 220px at 50% 70%, rgba(255,255,255,.55), rgba(255,255,255,0) 60%);
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 700ms ease, transform 700ms ease;
+  pointer-events:none;
+  z-index: 9;
+}
+
+.house.is-opening::after{
+  opacity: .9;
+  transform: translateY(0);
+}
+
+/* ===== Pista “Toc! Toc!” ===== */
+.knock-hint{
+  position:absolute;
+  left:50%;
+  bottom: 126px;           /* arriba de la puerta */
+  transform: translateX(-50%);
+  z-index: 20;
+
+  background: rgba(251,246,238,.96);
+  border: 3px solid rgba(0,0,0,.65);
+  border-radius: 14px;
+  box-shadow: 4px 4px 0 rgba(0,0,0,.35);
+  padding: 10px 12px;
+
+  font-weight: 900;
+  color: #ff4fa0;
+  letter-spacing: .06em;
+  text-shadow: none;
+
+  opacity: 0;
+  pointer-events:none;
+}
+
+.knock-hint.is-show{
+  animation: hint-pop 800ms ease-out forwards, hint-bob 1.2s ease-in-out 800ms infinite;
+}
+
+@keyframes hint-pop{
+  from{ opacity:0; transform: translateX(-50%) translateY(10px) scale(.97); }
+  to{ opacity:1; transform: translateX(-50%) translateY(0) scale(1); }
+}
+
+@keyframes hint-bob{
+  0%,100%{ transform: translateX(-50%) translateY(0); }
+  50%{ transform: translateX(-50%) translateY(-4px); }
+}
+
+/* Mobile tweak */
+@media (max-width: 430px){
+  .knock-hint{ bottom: 118px; padding: 9px 10px; }
+}
+/* ===== Zoom cámara + luz detrás de la puerta ===== */
+
+/* Permitimos zoom sin que se corte raro */
+.stage{
+  transform-origin: 50% 80%;
+  will-change: transform, filter;
+  transition: transform 1100ms cubic-bezier(.2,.9,.2,1), filter 1100ms ease;
+}
+
+/* Cuando abrimos: zoom + un pelín de “glow” general */
+.stage.is-zooming{
+  transform: scale(1.10);
+  filter: brightness(1.04) saturate(1.05);
+}
+
+/* Un overlay global suave (tipo flash romántico) */
+.sky::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background: radial-gradient(520px 420px at 50% 70%, rgba(255,255,255,.35), rgba(255,255,255,0) 60%);
+  opacity: 0;
+  transition: opacity 900ms ease;
+  pointer-events:none;
+  z-index: 4;
+}
+.stage.is-zooming ~ .hud,
+.stage.is-zooming{ z-index: 5; } /* asegura orden */
+
+/* Activación del overlay mientras se acerca */
+.screen--game .sky.is-zooming::after{
+  opacity: 1;
+}
+
+/* ===== Luz detrás de la puerta (portal) ===== */
+
+/* Asegura perspectiva 3D bonita */
+.house{
+  perspective: 900px;
+}
+
+/* Marco/entrada: luz “desde adentro” (detrás de la puerta) */
+.house .door{
+  position:absolute;
+  z-index: 3;
+}
+
+/* El hueco luminoso detrás (siempre existe, se muestra al abrir) */
+.house .door::after{
+  content:"";
+  position:absolute;
+  left: -2px;
+  top: -2px;
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
+  border-radius: 14px 14px 12px 12px;
+
+  background:
+    radial-gradient(50px 70px at 50% 35%, rgba(255,255,255,.95), rgba(255,255,255,0) 70%),
+    radial-gradient(80px 120px at 50% 65%, rgba(255,158,215,.65), rgba(255,255,255,0) 72%),
+    linear-gradient(180deg, rgba(255,255,255,.85), rgba(255,205,236,.35));
+
+  opacity: 0;
+  filter: blur(.3px);
+  box-shadow:
+    0 0 20px rgba(255,255,255,.55),
+    0 0 46px rgba(255,79,160,.30);
+
+  transform: translateZ(-1px);
+  pointer-events:none;
+}
+
+/* Rayitos suaves desde el marco (más romántico) */
+.house .door .rays{ display:none; } /* por si existiera algo viejo */
+
+.house.is-opening .door::after{
+  opacity: 1;
+  animation: portal-pulse 900ms ease-in-out infinite;
+}
+
+@keyframes portal-pulse{
+  0%,100%{ box-shadow: 0 0 20px rgba(255,255,255,.55), 0 0 46px rgba(255,79,160,.30); }
+  50%{ box-shadow: 0 0 26px rgba(255,255,255,.70), 0 0 62px rgba(255,79,160,.42); }
+}
+
+/* La puerta al abrir deja ver el portal */
+.house .door.is-open{
+  transform: translateX(-50%) rotateY(-72deg);
+}
+
+/* Mobile: zoom más suave para que no “maree” */
+@media (max-width: 430px){
+  .stage.is-zooming{ transform: scale(1.07); }
+}
+/* ===== PUERTA PRO: marco + interior + haz de luz + puerta con espesor ===== */
+
+/* Asegura capas */
+.house{ position: relative; perspective: 1100px; }
+.house .roof{ z-index: 2; }
+.house .body{ z-index: 1; }
+
+/* Marco fijo (silueta) detrás de la puerta */
+.house .door{
+  cursor:pointer;
+  transform-origin: left center;
+  transform-style: preserve-3d;
+  will-change: transform, filter;
+  transition: transform 1000ms cubic-bezier(.2,.9,.2,1), filter 300ms ease;
+  z-index: 6;
+}
+
+/* MARCO (jamba) y hueco interior */
+.house .door::after{
+  content:"";
+  position:absolute;
+  inset: -6px; /* marco más grande que la puerta */
+  border-radius: 16px 16px 14px 14px;
+
+  /* marco oscuro + borde interior */
+  background:
+    linear-gradient(180deg, rgba(0,0,0,.24), rgba(0,0,0,.10)) padding-box;
+  border: 4px solid rgba(0,0,0,.25);
+
+  /* por defecto no se nota, aparece al abrir */
+  opacity: 0;
+  transition: opacity 700ms ease;
+  pointer-events:none;
+  transform: translateZ(-6px); /* atrás */
+}
+
+/* INTERIOR LUMINOSO (la “entrada”) */
+.house .door::before{
+  content:"";
+  position:absolute;
+  inset: 6px; /* dentro del marco */
+  border-radius: 12px 12px 10px 10px;
+
+  background:
+    radial-gradient(70px 90px at 50% 25%, rgba(255,255,255,.98), rgba(255,255,255,0) 70%),
+    radial-gradient(140px 170px at 50% 70%, rgba(255,215,240,.70), rgba(255,255,255,0) 70%),
+    linear-gradient(180deg, rgba(255,255,255,.95), rgba(255,206,236,.45));
+  opacity: 0;
+  filter: blur(.2px);
+  box-shadow:
+    0 0 18px rgba(255,255,255,.55),
+    0 0 50px rgba(255,79,160,.35);
+  transition: opacity 700ms ease;
+  pointer-events:none;
+  transform: translateZ(-5px); /* atrás, pero adelante del marco */
+}
+
+/* Haz de luz “salindo” hacia abajo */
+.house .body{
+  position:absolute;
+}
+.house .body::after{
+  content:"";
+  position:absolute;
+  left:50%;
+  bottom: -32px;
+  width: 160px;
+  height: 120px;
+  transform: translateX(-50%);
+  background: radial-gradient(90px 70px at 50% 0%, rgba(255,255,255,.75), rgba(255,255,255,0) 70%);
+  opacity: 0;
+  filter: blur(1px);
+  transition: opacity 700ms ease;
+  pointer-events:none;
+}
+
+/* “Espesor” de la puerta (canto lateral) */
+.house .door{
+  box-shadow: 6px 6px 0 rgba(0,0,0,.18);
+}
+.house .door.is-open{
+  /* rotación un poco menor para que no se vea rara */
+  transform: translateX(-50%) rotateY(-58deg);
+  filter: brightness(1.02);
+}
+
+/* Cuando estamos abriendo, se muestra marco + interior + haz */
+.house.is-opening .door::after,
+.house.is-opening .door::before{
+  opacity: 1;
+}
+.house.is-opening .body::after{
+  opacity: 1;
+}
+
+/* ===== ENTRADA / “CAMARA” ===== */
+.stage{
+  transform-origin: 50% 78%;
+  will-change: transform, filter;
+  transition: transform 1200ms cubic-bezier(.2,.9,.2,1), filter 1200ms ease;
+}
+.stage.is-zooming{
+  transform: scale(1.18);
+  filter: saturate(1.06) brightness(1.05);
+}
+
+/* Flash suave de transición para que se sienta “entrar” */
+.sky{
+  position:relative;
+}
+.sky::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(520px 420px at 50% 70%, rgba(255,255,255,.42), rgba(255,255,255,0) 65%),
+    radial-gradient(900px 700px at 50% 70%, rgba(255,153,210,.12), rgba(255,255,255,0) 70%);
+  opacity: 0;
+  transition: opacity 900ms ease;
+  pointer-events:none;
+  z-index: 4;
+}
+.sky.is-zooming::after{ opacity: 1; }
+
+/* Mobile: zoom más suave */
+@media (max-width: 430px){
+  .stage.is-zooming{ transform: scale(1.12); }
+}

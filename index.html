@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>Valentine Pixel</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <!-- Partículas (siempre arriba) -->
+  <canvas id="hearts" aria-hidden="true"></canvas>
+
+  <main class="app" aria-label="Mini juego Valentine">
+    <!-- INTRO -->
+    <section class="screen screen--intro is-active" id="screen-intro" aria-hidden="false">
+      <div class="container center">
+        <div class="intro-stack">
+          <h1 class="pixel-title">
+            <span class="emoji">💖</span> SAN VALENTIN <span class="emoji">💖</span>
+          </h1>
+          <p class="pixel-sub pulse" id="intro-hint">Presiona cualquier tecla para comenzar...</p>
+          <button class="btn btn--ghost" id="intro-start" type="button" aria-describedby="intro-hint">
+            Tocar para comenzar
+          </button>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- GAME -->
+    <section class="screen screen--game" id="screen-game" aria-hidden="true">
+      <div class="container game">
+        <div class="sky" role="img" aria-label="Cielo con nubes">
+          <div class="cloud cloud--1" aria-hidden="true"></div>
+          <div class="cloud cloud--2" aria-hidden="true"></div>
+          <div class="cloud cloud--3" aria-hidden="true"></div>
+
+          <div class="stage" aria-hidden="true">
+            <div class="house">
+              <div class="roof"></div>
+              <div class="body">
+                <div class="window w1"></div>
+                <div class="window w2"></div>
+                <div class="door" id="door" tabindex="0" role="button" aria-label="Tocar la puerta"></div>
+              </div>
+
+              <div class="dog-wrap" aria-hidden="true">
+                <div class="dog" id="dog" aria-label="Perrito pixel"></div>
+                <div class="invite-card" id="invite-card">
+                  <div class="invite-title">Invitación</div>
+                  <div class="invite-date">14 de febrero 💌</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!--<div class="hud">
+          <button class="btn btn--small" id="btn-skip" type="button">Saltar</button>
+        </div>-->
+      </div>
+    </section>
+
+    <!-- QUESTION -->
+    <section class="screen screen--question" id="screen-question" aria-hidden="true">
+      <div class="container center">
+        <div class="card" role="dialog" aria-modal="true" aria-labelledby="q-title" aria-describedby="q-hint">
+          <div class="card__inner">
+            <h2 class="pixel-title pixel-title--sm" id="q-title">Hola mi Vida! Quiere ser mi San Valentin Este 2026?</h2>
+
+            <div class="actions" id="q-actions">
+              <button class="btn btn--yes" id="btn-yes" type="button">SI</button>
+              <button class="btn btn--no" id="btn-no" type="button">NO</button>
+            </div>
+
+            <p class="hint" id="q-hint">*Tip: el “NO” es poquito tímido 😅</p>
+            <p class="toast" id="toast" aria-live="polite"></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- THANKS -->
+    <section class="screen screen--thanks" id="screen-thanks" aria-hidden="true">
+      <div class="container center">
+        <div class="card card--big" role="dialog" aria-modal="true" aria-labelledby="t-title">
+          <div class="card__inner">
+            <h2 class="pixel-title pixel-title--md" id="t-title">¡Gracias por aceptar! 💕</h2>
+
+            <p class="msg">
+              Eres la mejor persona del mundo mundial<br />
+              y me haces muy feliz.<br /><br />
+              ¡Te amo infinitamente! 💖<br /><br />
+              Mi culito de Zapallo 💞
+            </p>
+
+            <div class="emoji-row" aria-hidden="true">💕 💖 💗 💓 💞 💝 💘</div>
+
+            <button class="btn" id="btn-replay" type="button">Reiniciar</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="./app.js"></script>
+</body>
+</html>
