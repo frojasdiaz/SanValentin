@@ -1,0 +1,53 @@
+<!--
+  Abrir index.html en el navegador.
+  Opcional: npx serve
+-->
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Pistas de San Valentín</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <canvas id="hearts-canvas" aria-hidden="true"></canvas>
+
+  <main class="app" aria-label="Revelador de pistas de San Valentín">
+    <article class="card" id="main-card">
+      <span class="badge" id="day-badge">Pista 1</span>
+
+      <header class="card-header">
+        <h1 class="title">Pistas de San Valentín &#128150;</h1>
+        <p class="subtitle">
+          <span id="day-subtitle">Día 12</span>
+          <span class="subtitle-note">Se desbloquea una pista cada día</span>
+        </p>
+      </header>
+
+      <div class="content-shell" id="content-shell">
+        <section class="panel" id="lock-panel" hidden aria-labelledby="lock-title">
+          <h2 class="panel-title" id="lock-title">Aún no...</h2>
+          <p class="panel-text">Vuelva mañana &#128521;</p>
+          <p class="countdown" id="countdown-text"></p>
+        </section>
+
+        <section class="panel" id="clue-panel" aria-labelledby="clue-title">
+          <h2 class="sr-only" id="clue-title">Pista del día</h2>
+          <div class="day-illustration" id="day-illustration" aria-hidden="true"></div>
+          <p class="panel-text day-text" id="day-text"></p>
+        </section>
+      </div>
+
+      <nav class="controls" aria-label="Navegación de pistas">
+        <button class="btn" id="btn-prev" type="button">Ver pista anterior</button>
+        <button class="btn" id="btn-next" type="button">Ver pista siguiente</button>
+      </nav>
+
+      <p class="live-status" id="live-status" aria-live="polite"></p>
+    </article>
+  </main>
+
+  <script src="./app.js"></script>
+</body>
+</html>

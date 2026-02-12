@@ -339,17 +339,6 @@ body{
   border: 3px solid rgba(0,0,0,.22);
 }
 
-.house .door::after{
-  content:"";
-  position:absolute;
-  right: 10px;
-  top: 44px;
-  width: 8px; height: 8px;
-  background: rgba(255,255,255,.35);
-  border-radius: 50%;
-  border: 2px solid rgba(0,0,0,.18);
-}
-
 .house .window{
   position:absolute;
   bottom: 54px;
@@ -556,35 +545,50 @@ body{
 
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce){
+  #hearts{ display:none; }
   .cloud--1,.cloud--2,.cloud--3,.pulse{ animation:none !important; }
-  .dog{ animation:none !important; opacity:1; }
+  .dog{ animation:none !important; }
+  .dog{ opacity:1; }
   .invite-card{ opacity:1; transform: translateX(-50%); }
+  .house::after,
+  .house .door,
+  .stage,
+  .sky::after{
+    transition: none !important;
+  }
+  .stage.is-zooming{
+    transform: none !important;
+    filter: none !important;
+  }
+  .sky.is-zooming::after{
+    opacity: 0 !important;
+  }
 }
 
-/* ===== Fix texto borroso / doble en móvil (QUESTION + THANKS) ===== */
+/* ===== Fix texto borroso / doble en movil (QUESTION + THANKS) ===== */
 
-/* Solo para títulos dentro de cards (question/thanks) */
+/* Solo para titulos dentro de cards (question/thanks) */
 .screen--question .pixel-title,
 .screen--thanks .pixel-title{
-  /* baja un poco el tracking para que no “vibre” en Android */
+  /* baja un poco el tracking para que no "vibre" en Android */
   letter-spacing: .02em !important;
 
-  /* quita el efecto “doble” */
+  /* quita el efecto "doble" */
   text-shadow: none !important;
 
   /* mejor contraste y look retro limpio */
   color: #ff4fa0 !important;
 
-  /* contorno suave (no tan agresivo como text-shadow múltiple) */
+  /* contorno suave (no tan agresivo como text-shadow multiple) */
   -webkit-text-stroke: 1.2px rgba(0,0,0,.55);
   paint-order: stroke fill;
 
-  /* render más nítido */
+  /* render mas nitido */
   -webkit-font-smoothing: antialiased;
   text-rendering: geometricPrecision;
 }
 
-/* Ajuste puntual para que el texto largo no se vea gigante en móvil */
+/* Ajuste puntual para que el texto largo no se vea gigante en movil */
 @media (max-width: 430px){
   .screen--question .pixel-title{
     font-size: clamp(18px, 5.2vw, 26px) !important;
@@ -592,39 +596,9 @@ body{
   }
 }
 
-/* ===== Puerta interactiva + transición bonita ===== */
+/* ===== Door + transition (single source of truth) ===== */
 
-.house .door{
-  cursor: pointer;
-  transform-origin: left center;
-  transform-style: preserve-3d;
-  will-change: transform;
-  transition: transform 900ms cubic-bezier(.2,.9,.2,1), filter 300ms ease;
-  position: absolute;
-  z-index: 3; /* encima del cuerpo */
-}
-
-/* hover/tap feedback */
-.house .door:hover{
-  filter: brightness(1.05);
-}
-
-/* “abierta” (rotación 3D hacia atrás) */
-.house .door.is-open{
-  transform: translateX(-50%) rotateY(-70deg);
-}
-
-/* agrega “borde interior” para efecto de grosor */
-.house .door::before{
-  content:"";
-  position:absolute;
-  inset: 3px 5px 3px 3px;
-  border-radius: 10px 10px 9px 9px;
-  background: rgba(255,255,255,.08);
-  opacity: .5;
-}
-
-/* brillo suave cuando abres */
+/* Brillo suave general al abrir la casa */
 .house::after{
   content:"";
   position:absolute;
@@ -643,149 +617,14 @@ body{
   transform: translateY(0);
 }
 
-/* ===== Pista “Toc! Toc!” ===== */
-.knock-hint{
-  position:absolute;
-  left:50%;
-  bottom: 126px;           /* arriba de la puerta */
-  transform: translateX(-50%);
-  z-index: 20;
-
-  background: rgba(251,246,238,.96);
-  border: 3px solid rgba(0,0,0,.65);
-  border-radius: 14px;
-  box-shadow: 4px 4px 0 rgba(0,0,0,.35);
-  padding: 10px 12px;
-
-  font-weight: 900;
-  color: #ff4fa0;
-  letter-spacing: .06em;
-  text-shadow: none;
-
-  opacity: 0;
-  pointer-events:none;
-}
-
-.knock-hint.is-show{
-  animation: hint-pop 800ms ease-out forwards, hint-bob 1.2s ease-in-out 800ms infinite;
-}
-
-@keyframes hint-pop{
-  from{ opacity:0; transform: translateX(-50%) translateY(10px) scale(.97); }
-  to{ opacity:1; transform: translateX(-50%) translateY(0) scale(1); }
-}
-
-@keyframes hint-bob{
-  0%,100%{ transform: translateX(-50%) translateY(0); }
-  50%{ transform: translateX(-50%) translateY(-4px); }
-}
-
-/* Mobile tweak */
-@media (max-width: 430px){
-  .knock-hint{ bottom: 118px; padding: 9px 10px; }
-}
-/* ===== Zoom cámara + luz detrás de la puerta ===== */
-
-/* Permitimos zoom sin que se corte raro */
-.stage{
-  transform-origin: 50% 80%;
-  will-change: transform, filter;
-  transition: transform 1100ms cubic-bezier(.2,.9,.2,1), filter 1100ms ease;
-}
-
-/* Cuando abrimos: zoom + un pelín de “glow” general */
-.stage.is-zooming{
-  transform: scale(1.10);
-  filter: brightness(1.04) saturate(1.05);
-}
-
-/* Un overlay global suave (tipo flash romántico) */
-.sky::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  background: radial-gradient(520px 420px at 50% 70%, rgba(255,255,255,.35), rgba(255,255,255,0) 60%);
-  opacity: 0;
-  transition: opacity 900ms ease;
-  pointer-events:none;
-  z-index: 4;
-}
-.stage.is-zooming ~ .hud,
-.stage.is-zooming{ z-index: 5; } /* asegura orden */
-
-/* Activación del overlay mientras se acerca */
-.screen--game .sky.is-zooming::after{
-  opacity: 1;
-}
-
-/* ===== Luz detrás de la puerta (portal) ===== */
-
-/* Asegura perspectiva 3D bonita */
-.house{
-  perspective: 900px;
-}
-
-/* Marco/entrada: luz “desde adentro” (detrás de la puerta) */
-.house .door{
-  position:absolute;
-  z-index: 3;
-}
-
-/* El hueco luminoso detrás (siempre existe, se muestra al abrir) */
-.house .door::after{
-  content:"";
-  position:absolute;
-  left: -2px;
-  top: -2px;
-  width: calc(100% + 4px);
-  height: calc(100% + 4px);
-  border-radius: 14px 14px 12px 12px;
-
-  background:
-    radial-gradient(50px 70px at 50% 35%, rgba(255,255,255,.95), rgba(255,255,255,0) 70%),
-    radial-gradient(80px 120px at 50% 65%, rgba(255,158,215,.65), rgba(255,255,255,0) 72%),
-    linear-gradient(180deg, rgba(255,255,255,.85), rgba(255,205,236,.35));
-
-  opacity: 0;
-  filter: blur(.3px);
-  box-shadow:
-    0 0 20px rgba(255,255,255,.55),
-    0 0 46px rgba(255,79,160,.30);
-
-  transform: translateZ(-1px);
-  pointer-events:none;
-}
-
-/* Rayitos suaves desde el marco (más romántico) */
-.house .door .rays{ display:none; } /* por si existiera algo viejo */
-
-.house.is-opening .door::after{
-  opacity: 1;
-  animation: portal-pulse 900ms ease-in-out infinite;
-}
-
-@keyframes portal-pulse{
-  0%,100%{ box-shadow: 0 0 20px rgba(255,255,255,.55), 0 0 46px rgba(255,79,160,.30); }
-  50%{ box-shadow: 0 0 26px rgba(255,255,255,.70), 0 0 62px rgba(255,79,160,.42); }
-}
-
-/* La puerta al abrir deja ver el portal */
-.house .door.is-open{
-  transform: translateX(-50%) rotateY(-72deg);
-}
-
-/* Mobile: zoom más suave para que no “maree” */
-@media (max-width: 430px){
-  .stage.is-zooming{ transform: scale(1.07); }
-}
-/* ===== PUERTA PRO: marco + interior + haz de luz + puerta con espesor ===== */
+/* ===== Puerta pro: marco + interior + haz de luz ===== */
 
 /* Asegura capas */
 .house{ position: relative; perspective: 1100px; }
 .house .roof{ z-index: 2; }
-.house .body{ z-index: 1; }
+.house .body{ z-index: 1; position:absolute; }
 
-/* Marco fijo (silueta) detrás de la puerta */
+/* Marco fijo (silueta) detras de la puerta */
 .house .door{
   cursor:pointer;
   transform-origin: left center;
@@ -793,34 +632,33 @@ body{
   will-change: transform, filter;
   transition: transform 1000ms cubic-bezier(.2,.9,.2,1), filter 300ms ease;
   z-index: 6;
+  box-shadow: 6px 6px 0 rgba(0,0,0,.18);
 }
 
-/* MARCO (jamba) y hueco interior */
+.house .door:hover{
+  filter: brightness(1.05);
+}
+
+/* Marco (jamba) y hueco interior */
 .house .door::after{
   content:"";
   position:absolute;
-  inset: -6px; /* marco más grande que la puerta */
+  inset: -6px; /* marco mas grande que la puerta */
   border-radius: 16px 16px 14px 14px;
-
-  /* marco oscuro + borde interior */
-  background:
-    linear-gradient(180deg, rgba(0,0,0,.24), rgba(0,0,0,.10)) padding-box;
+  background: linear-gradient(180deg, rgba(0,0,0,.24), rgba(0,0,0,.10)) padding-box;
   border: 4px solid rgba(0,0,0,.25);
-
-  /* por defecto no se nota, aparece al abrir */
   opacity: 0;
   transition: opacity 700ms ease;
   pointer-events:none;
-  transform: translateZ(-6px); /* atrás */
+  transform: translateZ(-6px);
 }
 
-/* INTERIOR LUMINOSO (la “entrada”) */
+/* Interior luminoso (la entrada) */
 .house .door::before{
   content:"";
   position:absolute;
-  inset: 6px; /* dentro del marco */
+  inset: 6px;
   border-radius: 12px 12px 10px 10px;
-
   background:
     radial-gradient(70px 90px at 50% 25%, rgba(255,255,255,.98), rgba(255,255,255,0) 70%),
     radial-gradient(140px 170px at 50% 70%, rgba(255,215,240,.70), rgba(255,255,255,0) 70%),
@@ -832,13 +670,10 @@ body{
     0 0 50px rgba(255,79,160,.35);
   transition: opacity 700ms ease;
   pointer-events:none;
-  transform: translateZ(-5px); /* atrás, pero adelante del marco */
+  transform: translateZ(-5px);
 }
 
-/* Haz de luz “salindo” hacia abajo */
-.house .body{
-  position:absolute;
-}
+/* Haz de luz saliendo hacia abajo */
 .house .body::after{
   content:"";
   position:absolute;
@@ -854,40 +689,36 @@ body{
   pointer-events:none;
 }
 
-/* “Espesor” de la puerta (canto lateral) */
-.house .door{
-  box-shadow: 6px 6px 0 rgba(0,0,0,.18);
-}
 .house .door.is-open{
-  /* rotación un poco menor para que no se vea rara */
   transform: translateX(-50%) rotateY(-58deg);
   filter: brightness(1.02);
 }
 
-/* Cuando estamos abriendo, se muestra marco + interior + haz */
 .house.is-opening .door::after,
 .house.is-opening .door::before{
   opacity: 1;
 }
+
 .house.is-opening .body::after{
   opacity: 1;
 }
 
-/* ===== ENTRADA / “CAMARA” ===== */
+/* ===== Entrada / camara ===== */
 .stage{
   transform-origin: 50% 78%;
   will-change: transform, filter;
   transition: transform 1200ms cubic-bezier(.2,.9,.2,1), filter 1200ms ease;
 }
+
 .stage.is-zooming{
   transform: scale(1.18);
   filter: saturate(1.06) brightness(1.05);
 }
 
-/* Flash suave de transición para que se sienta “entrar” */
 .sky{
   position:relative;
 }
+
 .sky::after{
   content:"";
   position:absolute;
@@ -900,9 +731,504 @@ body{
   pointer-events:none;
   z-index: 4;
 }
-.sky.is-zooming::after{ opacity: 1; }
 
-/* Mobile: zoom más suave */
+.sky.is-zooming::after{
+  opacity: 1;
+}
+
+/* Mobile: zoom mas suave */
 @media (max-width: 430px){
   .stage.is-zooming{ transform: scale(1.12); }
+}
+
+/* ===== Premium thanks ===== */
+.screen--thanks{
+  background:
+    radial-gradient(1200px 780px at 20% 20%, #ffdff0 0%, rgba(255,223,240,.4) 45%, rgba(255,223,240,0) 68%),
+    radial-gradient(900px 680px at 85% 82%, #ffc7e4 0%, rgba(255,199,228,.35) 48%, rgba(255,199,228,0) 68%),
+    linear-gradient(160deg, #ffe8f3 0%, #ffcce4 50%, #ffbadc 100%);
+}
+
+.screen--thanks::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background-image:
+    radial-gradient(circle at 10% 20%, rgba(255,255,255,.35) 0 2px, transparent 3px),
+    radial-gradient(circle at 75% 35%, rgba(255,255,255,.28) 0 2px, transparent 3px),
+    radial-gradient(circle at 60% 80%, rgba(255,255,255,.30) 0 2px, transparent 3px);
+  animation: twinkle 3.8s ease-in-out infinite;
+}
+
+@keyframes twinkle{
+  0%,100%{ opacity:.45; }
+  50%{ opacity:.9; }
+}
+
+.screen--thanks .card__inner{
+  display:grid;
+  gap: 12px;
+}
+
+.thanks-tools{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.btn--letter{
+  background: linear-gradient(180deg, #fff6fb, #ffd7eb);
+  border-color: rgba(0,0,0,.78);
+}
+
+.btn--soft{
+  background: linear-gradient(180deg, #fff, #ffe9f6);
+  border-color: rgba(0,0,0,.70);
+}
+
+.btn--portal{
+  background: linear-gradient(180deg, #fff7e8, #ffe2b8);
+  border-color: rgba(0,0,0,.72);
+}
+
+.btn--portal.is-live{
+  animation: portal-pulse 1.4s ease-in-out infinite;
+  box-shadow:
+    4px 4px 0 rgba(0,0,0,.26),
+    0 0 0 3px rgba(255,189,92,.45);
+}
+
+@keyframes portal-pulse{
+  0%,100%{ transform: translateY(0); filter: brightness(1); }
+  50%{ transform: translateY(-1px); filter: brightness(1.05); }
+}
+
+.portal-hint{
+  min-height: 18px;
+  margin: -2px 0 2px;
+  font-size: 13px;
+  font-weight: 800;
+  color: rgba(0,0,0,.65);
+}
+
+.promise-chip{
+  margin: 2px 0 0;
+  min-height: 24px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.62);
+  border: 2px dashed rgba(0,0,0,.23);
+  color: rgba(0,0,0,.78);
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.promise-chip.is-pop{
+  animation: promise-pop .45s ease;
+}
+
+@keyframes promise-pop{
+  0%{ transform: scale(.96); opacity:.65; }
+  100%{ transform: scale(1); opacity:1; }
+}
+
+.love-letter{
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height .55s ease, opacity .35s ease;
+}
+
+.love-letter.is-open{
+  max-height: 320px;
+  opacity: 1;
+}
+
+.love-letter__paper{
+  text-align:left;
+  margin-top: 2px;
+  padding: 14px 14px 12px;
+  border-radius: 14px;
+  border: 3px solid rgba(0,0,0,.55);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.88), rgba(255,243,250,.94)),
+    repeating-linear-gradient(180deg, rgba(0,0,0,.06) 0 1px, transparent 1px 26px);
+  box-shadow: 4px 4px 0 rgba(0,0,0,.28);
+}
+
+.letter-greeting,
+.letter-sign{
+  margin: 0;
+  font-weight: 900;
+  color: rgba(0,0,0,.78);
+}
+
+.letter-greeting{ margin-bottom: 10px; }
+.letter-sign{ margin-top: 10px; font-size: 14px; }
+
+.letter-body{
+  margin: 0;
+  min-height: 116px;
+  line-height: 1.5;
+  white-space: pre-line;
+  color: rgba(0,0,0,.86);
+}
+
+@media (max-width: 430px){
+  .thanks-tools{
+    gap: 10px;
+  }
+
+  .thanks-tools .btn{
+    width: 100%;
+    max-width: 260px;
+  }
+
+  .promise-chip{
+    font-size: 13px;
+  }
+
+  .letter-body{
+    min-height: 130px;
+    font-size: 14px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce){
+  .screen--thanks::before,
+  .promise-chip.is-pop,
+  .btn--portal.is-live{
+    animation:none !important;
+  }
+  .love-letter{
+    transition:none !important;
+  }
+}
+
+/* ===== House scene refresh ===== */
+.stage{
+  overflow: visible;
+}
+
+.stage::before{
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 44px;
+  width: 320px;
+  height: 120px;
+  transform: translateX(-50%);
+  border-radius: 999px;
+  background:
+    radial-gradient(150px 90px at 50% 38%, rgba(255, 251, 237, 0.9), rgba(255, 251, 237, 0) 68%),
+    radial-gradient(240px 100px at 50% 70%, rgba(255, 197, 226, 0.38), rgba(255, 197, 226, 0) 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.house{
+  animation: house-float 3.6s ease-in-out infinite;
+}
+
+@keyframes house-float{
+  0%, 100%{ transform: translateY(0); }
+  50%{ transform: translateY(-4px); }
+}
+
+.house .chimney{
+  position: absolute;
+  top: 6px;
+  right: 68px;
+  width: 38px;
+  height: 62px;
+  border-radius: 8px;
+  border: 3px solid rgba(0, 0, 0, 0.22);
+  background: linear-gradient(180deg, #d97f8b, #b65463);
+  z-index: 1;
+}
+
+.house .chimney::before{
+  content: "";
+  position: absolute;
+  left: -7px;
+  top: -10px;
+  width: 48px;
+  height: 12px;
+  border-radius: 8px;
+  background: #8b3d4a;
+}
+
+.chimney-hearts{
+  position: absolute;
+  top: -12px;
+  right: 64px;
+  width: 56px;
+  height: 60px;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.chimney-hearts span{
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #fff, #ffd6ea 45%, #ff8cc0 100%);
+  opacity: 0;
+  transform: translateX(-50%) scale(0.75);
+  animation: chimney-heart-rise 2.8s ease-in-out infinite;
+}
+
+.chimney-hearts span::before,
+.chimney-hearts span::after{
+  content: "";
+  position: absolute;
+  width: 8px;
+  height: 12px;
+  border-radius: 8px 8px 0 0;
+  background: #ff9fcd;
+  top: 2px;
+}
+
+.chimney-hearts span::before{
+  left: 2px;
+  transform: rotate(-45deg);
+}
+
+.chimney-hearts span::after{
+  right: 2px;
+  transform: rotate(45deg);
+}
+
+.chimney-hearts span:nth-child(2){
+  animation-delay: .9s;
+}
+
+.chimney-hearts span:nth-child(3){
+  animation-delay: 1.8s;
+}
+
+@keyframes chimney-heart-rise{
+  0%{
+    opacity: 0;
+    transform: translateX(-50%) translateY(0) scale(0.7);
+  }
+  18%{
+    opacity: .85;
+  }
+  100%{
+    opacity: 0;
+    transform: translateX(-50%) translateY(-42px) translateX(8px) scale(1.1);
+  }
+}
+
+.house .body{
+  overflow: visible;
+}
+
+.house .window{
+  box-shadow:
+    0 0 0 2px rgba(255, 255, 255, 0.25) inset,
+    0 0 22px rgba(255, 244, 191, 0.36);
+  animation: warm-window 2.6s ease-in-out infinite;
+}
+
+.house .window.w2{
+  animation-delay: 1.1s;
+}
+
+@keyframes warm-window{
+  0%, 100%{
+    filter: saturate(1) brightness(1);
+  }
+  50%{
+    filter: saturate(1.08) brightness(1.12);
+  }
+}
+
+.house .door{
+  display: block;
+  overflow: hidden;
+  box-shadow:
+    0 0 0 2px rgba(255, 255, 255, 0.08) inset,
+    6px 6px 0 rgba(0, 0, 0, 0.18);
+}
+
+.door-heart{
+  position: absolute;
+  left: 50%;
+  top: 17px;
+  width: 16px;
+  height: 13px;
+  transform: translateX(-50%) rotate(-45deg);
+  background: #ffb7dc;
+  border-radius: 8px 8px 0 0;
+  opacity: .9;
+  transition: transform 300ms ease, opacity 280ms ease;
+}
+
+.door-heart::before,
+.door-heart::after{
+  content: "";
+  position: absolute;
+  width: 16px;
+  height: 13px;
+  border-radius: 8px 8px 0 0;
+  background: #ffb7dc;
+}
+
+.door-heart::before{
+  left: -8px;
+  top: 8px;
+  transform: rotate(-45deg);
+}
+
+.door-heart::after{
+  left: 8px;
+  top: 8px;
+  transform: rotate(45deg);
+}
+
+.door-knob{
+  position: absolute;
+  right: 10px;
+  top: 46px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #ffc165;
+  border: 2px solid rgba(0, 0, 0, 0.35);
+  box-shadow: 0 0 10px rgba(255, 193, 101, 0.4);
+}
+
+.door-glow{
+  position: absolute;
+  left: 50%;
+  bottom: -8px;
+  width: 110px;
+  height: 126px;
+  transform: translateX(-50%);
+  background: radial-gradient(70px 95px at 50% 45%, rgba(255, 255, 255, 0.86), rgba(255, 255, 255, 0) 72%);
+  opacity: 0;
+  filter: blur(.8px);
+  transition: opacity .35s ease, transform .35s ease;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.welcome-mat{
+  position: absolute;
+  left: 50%;
+  bottom: -30px;
+  transform: translateX(-50%);
+  min-width: 126px;
+  padding: 5px 10px;
+  border-radius: 12px;
+  border: 2px solid rgba(0, 0, 0, 0.4);
+  background: linear-gradient(180deg, #ffe7c4, #efb97f);
+  text-align: center;
+  font-size: 12px;
+  font-weight: 900;
+  color: rgba(0, 0, 0, 0.72);
+  letter-spacing: .06em;
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.2);
+  transition: transform .3s ease, filter .3s ease;
+}
+
+.house .door:focus-visible + .door-glow,
+.house.is-door-active .door-glow,
+.house.is-opening .door-glow{
+  opacity: .95;
+  transform: translateX(-50%) translateY(-3px);
+}
+
+.house .door:focus-visible ~ .welcome-mat,
+.house.is-door-active .welcome-mat{
+  transform: translateX(-50%) translateY(-2px);
+  filter: brightness(1.04);
+}
+
+.house.is-door-active .door-heart{
+  transform: translateX(-50%) rotate(-45deg) scale(1.08);
+}
+
+.house .door.is-open .door-heart{
+  opacity: .2;
+  transform: translateX(-40%) rotate(-45deg) scale(0.8);
+}
+
+.entry-caption{
+  position: absolute;
+  left: 50%;
+  bottom: 14px;
+  transform: translateX(-50%) translateY(8px) scale(.98);
+  margin: 0;
+  min-width: 240px;
+  padding: 8px 12px;
+  border-radius: 12px;
+  border: 3px solid rgba(0, 0, 0, 0.62);
+  background: rgba(251, 246, 238, 0.94);
+  color: #d34386;
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: .05em;
+  text-align: center;
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.25);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 20;
+  transition: opacity .25s ease, transform .25s ease;
+}
+
+.entry-caption.is-show{
+  opacity: 1;
+  transform: translateX(-50%) translateY(0) scale(1);
+}
+
+.house.is-opening .welcome-mat{
+  transform: translateX(-50%) translateY(1px);
+  filter: brightness(1.08);
+}
+
+@media (max-width: 430px){
+  .house{
+    animation-duration: 4.4s;
+  }
+
+  .house .chimney{
+    right: 52px;
+    transform: scale(.9);
+    transform-origin: top right;
+  }
+
+  .chimney-hearts{
+    right: 50px;
+    top: -10px;
+    transform: scale(.9);
+  }
+
+  .welcome-mat{
+    min-width: 110px;
+    font-size: 11px;
+  }
+
+  .entry-caption{
+    min-width: 210px;
+    font-size: 12px;
+    bottom: 8px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce){
+  .stage::before,
+  .house,
+  .house .window,
+  .chimney-hearts span{
+    animation: none !important;
+  }
 }

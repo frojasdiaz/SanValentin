@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="./styles.css" />
 </head>
 <body>
-  <!-- Partículas (siempre arriba) -->
+  <!-- Particulas ambientales -->
   <canvas id="hearts" aria-hidden="true"></canvas>
 
   <main class="app" aria-label="Mini juego Valentine">
@@ -16,7 +16,7 @@
       <div class="container center">
         <div class="intro-stack">
           <h1 class="pixel-title">
-            <span class="emoji">💖</span> SAN VALENTIN <span class="emoji">💖</span>
+            <span class="emoji">&#128150;</span> SAN VALENTIN <span class="emoji">&#128150;</span>
           </h1>
           <p class="pixel-sub pulse" id="intro-hint">Presiona cualquier tecla para comenzar...</p>
           <button class="btn btn--ghost" id="intro-start" type="button" aria-describedby="intro-hint">
@@ -24,7 +24,6 @@
           </button>
         </div>
       </div>
-
     </section>
 
     <!-- GAME -->
@@ -37,27 +36,35 @@
 
           <div class="stage" aria-hidden="true">
             <div class="house">
+              <div class="chimney" aria-hidden="true"></div>
+              <div class="chimney-hearts" aria-hidden="true">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
               <div class="roof"></div>
               <div class="body">
                 <div class="window w1"></div>
                 <div class="window w2"></div>
-                <div class="door" id="door" tabindex="0" role="button" aria-label="Tocar la puerta"></div>
+                <div class="door" id="door" tabindex="0" role="button" aria-label="Tocar la puerta para entrar a la invitación">
+                  <span class="door-heart" aria-hidden="true"></span>
+                  <span class="door-knob" aria-hidden="true"></span>
+                </div>
+                <div class="door-glow" aria-hidden="true"></div>
+                <div class="welcome-mat" aria-hidden="true">Toque aquí</div>
               </div>
 
               <div class="dog-wrap" aria-hidden="true">
                 <div class="dog" id="dog" aria-label="Perrito pixel"></div>
                 <div class="invite-card" id="invite-card">
-                  <div class="invite-title">Invitación</div>
-                  <div class="invite-date">14 de febrero 💌</div>
+                  <div class="invite-title">Invitacion</div>
+                  <div class="invite-date">14 de febrero &#128140;</div>
                 </div>
               </div>
             </div>
+            <p class="entry-caption" id="entry-caption" aria-live="polite"></p>
           </div>
         </div>
-
-        <!--<div class="hud">
-          <button class="btn btn--small" id="btn-skip" type="button">Saltar</button>
-        </div>-->
       </div>
     </section>
 
@@ -66,14 +73,14 @@
       <div class="container center">
         <div class="card" role="dialog" aria-modal="true" aria-labelledby="q-title" aria-describedby="q-hint">
           <div class="card__inner">
-            <h2 class="pixel-title pixel-title--sm" id="q-title">Hola mi Vida! Quiere ser mi San Valentin Este 2026?</h2>
+            <h2 class="pixel-title pixel-title--sm" id="q-title">Hola mi vida, quieres ser mi San Valentin este 2026?</h2>
 
             <div class="actions" id="q-actions">
               <button class="btn btn--yes" id="btn-yes" type="button">SI</button>
               <button class="btn btn--no" id="btn-no" type="button">NO</button>
             </div>
 
-            <p class="hint" id="q-hint">*Tip: el “NO” es poquito tímido 😅</p>
+            <p class="hint" id="q-hint">*Tip: el NO es poquito timido &#128517;</p>
             <p class="toast" id="toast" aria-live="polite"></p>
           </div>
         </div>
@@ -85,16 +92,39 @@
       <div class="container center">
         <div class="card card--big" role="dialog" aria-modal="true" aria-labelledby="t-title">
           <div class="card__inner">
-            <h2 class="pixel-title pixel-title--md" id="t-title">¡Gracias por aceptar! 💕</h2>
+            <h2 class="pixel-title pixel-title--md" id="t-title">Gracias por aceptar &#128150;</h2>
 
             <p class="msg">
               Eres la mejor persona del mundo mundial<br />
               y me haces muy feliz.<br /><br />
-              ¡Te amo infinitamente! 💖<br /><br />
-              Mi culito de Zapallo 💞
+              Te amo infinitamente &#128150;<br /><br />
+              Mi culito de zapallo &#128158;
             </p>
 
-            <div class="emoji-row" aria-hidden="true">💕 💖 💗 💓 💞 💝 💘</div>
+            <div class="emoji-row" aria-hidden="true">&#128149; &#128150; &#128151; &#128147; &#128158; &#128157; &#128152;</div>
+
+            <div class="thanks-tools" id="thanks-tools">
+              <button class="btn btn--letter" id="btn-letter" type="button" aria-controls="love-letter" aria-expanded="false">
+                Abrir carta secreta
+              </button>
+              <button class="btn btn--soft" id="btn-promise" type="button">
+                Leer promesa
+              </button>
+              <button class="btn btn--portal" id="btn-pistas" type="button">
+                Abrir pistas diarias
+              </button>
+            </div>
+            <p class="portal-hint" id="pistas-hint" aria-live="polite"></p>
+
+            <p class="promise-chip" id="promise-text" aria-live="polite"></p>
+
+            <section class="love-letter" id="love-letter" aria-hidden="true">
+              <div class="love-letter__paper">
+                <p class="letter-greeting">Para mi persona favorita:</p>
+                <p class="letter-body" id="letter-text"></p>
+                <p class="letter-sign">Con amor infinito, tu persona que te adora &#128158;</p>
+              </div>
+            </section>
 
             <button class="btn" id="btn-replay" type="button">Reiniciar</button>
           </div>
