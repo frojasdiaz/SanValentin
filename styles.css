@@ -747,6 +747,20 @@ body{
     radial-gradient(1200px 780px at 20% 20%, #ffdff0 0%, rgba(255,223,240,.4) 45%, rgba(255,223,240,0) 68%),
     radial-gradient(900px 680px at 85% 82%, #ffc7e4 0%, rgba(255,199,228,.35) 48%, rgba(255,199,228,0) 68%),
     linear-gradient(160deg, #ffe8f3 0%, #ffcce4 50%, #ffbadc 100%);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+
+.screen--thanks .container.center{
+  display: block;
+  height: auto;
+  min-height: 100%;
+  padding: clamp(16px, 4vh, 36px) 0;
+}
+
+.screen--thanks .card{
+  margin: 0 auto;
 }
 
 .screen--thanks::before{
@@ -843,8 +857,11 @@ body{
 }
 
 .love-letter.is-open{
-  max-height: 320px;
+  max-height: min(68vh, 440px);
   opacity: 1;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-right: 2px;
 }
 
 .love-letter__paper{
@@ -1054,9 +1071,7 @@ body{
 .house .door{
   display: block;
   overflow: hidden;
-  box-shadow:
-    0 0 0 2px rgba(255, 255, 255, 0.08) inset,
-    6px 6px 0 rgba(0, 0, 0, 0.18);
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.08) inset;
 }
 
 .door-heart{
@@ -1070,6 +1085,7 @@ body{
   border-radius: 8px 8px 0 0;
   opacity: .9;
   transition: transform 300ms ease, opacity 280ms ease;
+  display: none;
 }
 
 .door-heart::before,
@@ -1119,6 +1135,15 @@ body{
   transition: opacity .35s ease, transform .35s ease;
   z-index: 5;
   pointer-events: none;
+}
+
+/* Sin efecto de humo/brillo en la puerta */
+.house::after,
+.house .door::before,
+.house .door::after,
+.house .body::after,
+.door-glow{
+  display: none;
 }
 
 .welcome-mat{

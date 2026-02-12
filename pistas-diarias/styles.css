@@ -116,10 +116,9 @@ body {
   line-height: 1.06;
   letter-spacing: 0.04em;
   color: #ff4ea0;
-  text-shadow:
-    0 4px 0 rgba(0, 0, 0, 0.33),
-    2px 0 0 rgba(0, 0, 0, 0.22),
-    -2px 0 0 rgba(0, 0, 0, 0.22);
+  text-shadow: 0 3px 0 rgba(0, 0, 0, 0.3);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
 }
 
 .subtitle {
