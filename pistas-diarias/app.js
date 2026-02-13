@@ -25,7 +25,7 @@ const DAY_DATA = {
   14: {
     badge: "Sorpresa",
     title: "Dia 14",
-    text: "Bueno, llego el momento de contarle la verdad: este sabado nos vamos juntos al Valle de Elqui, a Pisco Elqui, donde arrende una casita para nosotros. La idea es salir antes de almuerzo, dejar las cositas en la casa e ir al rio, y ya en la tarde preparar un asadito. Cuando caiga la noche, disfrutaremos de las estrellas en el cielo mas despejado que existe... y luego tendremos nuestra noche de amor, solo usted y yo, en nuestra escapada especial de San Valentin...",
+    text: "Bueno, llego el momento de contarle la verdad: este sabado nos vamos juntos al Valle de Elqui, lugar sorpresa. La idea es salir antes de almuerzo, en la mañana, dejar nuestras cositas e ir al rio... almorzar y ya en la tarde noche preparar un mini asadito. Cuando caiga la noche, disfrutaremos de las estrellas en el cielo mas despejado que existe... y luego tendremos nuestra noche de amor, solo usted y yo, en nuestra escapada especial de San Valentin...",
     illustration: day14Svg,
   },
 };
